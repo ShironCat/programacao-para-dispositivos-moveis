@@ -22,16 +22,9 @@ class CalculoIMC extends StatefulWidget {
 }
 
 class _CalculoIMCState extends State<CalculoIMC> {
-  late String resultadoIMC = ResultadoIMC.normal;
-  final TextEditingController alturaController = TextEditingController(),
-      pesoController = TextEditingController();
-  AssetImage resultado = AssetImage(ResultadoIMC.normal);
-  double imc = 80 / (180 * 180);
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  String resultadoIMC = ResultadoIMC.normal;
+  final TextEditingController alturaController = TextEditingController();
+  final TextEditingController pesoController = TextEditingController();
 
   @override
   void dispose() {
@@ -43,8 +36,24 @@ class _CalculoIMCState extends State<CalculoIMC> {
   calcularIMC() {
     double altura = double.parse(alturaController.text);
     double peso = double.parse(pesoController.text);
-    imc = peso / (pow(altura / 100, 2) as double);
-    print(imc);
+    double imc = peso / (pow(altura / 100, 2));
+    String novoResultadoIMC;
+
+    if (imc < 18.5) {
+      novoResultadoIMC = ResultadoIMC.magreza;
+    } else if (imc < 25) {
+      novoResultadoIMC = ResultadoIMC.normal;
+    } else if (imc < 30) {
+      novoResultadoIMC = ResultadoIMC.excesso;
+    } else if (imc < 35) {
+      novoResultadoIMC = ResultadoIMC.obesidade;
+    } else {
+      novoResultadoIMC = ResultadoIMC.obesidade2;
+    }
+
+    setState(() {
+      resultadoIMC = novoResultadoIMC;
+    });
   }
 
   @override
